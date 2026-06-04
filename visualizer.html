@@ -19,11 +19,6 @@
     --green: #2ecc8f;
     --blue: #4d9de0;
     --purple: #9b72cf;
-    --node-root: #2e4a7a;
-    --node-int: #1a6645;
-    --node-pruned: #7a2020;
-    --node-frac: #7a4a00;
-    --node-infeas: #3a3f52;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,7 +30,6 @@
     min-height: 100vh;
   }
 
-  /* NAV */
   nav {
     background: var(--surface);
     display: flex;
@@ -46,6 +40,7 @@
     z-index: 100;
     border-bottom: 1px solid var(--border);
     gap: 0;
+    flex-wrap: wrap;
   }
   .nav-brand {
     font-family: 'Playfair Display', serif;
@@ -73,7 +68,6 @@
   .nav-tab:hover { color: var(--text); }
   .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-  /* SECTIONS */
   .section { display: none; padding: 3rem 2rem; max-width: 1240px; margin: 0 auto; }
   .section.active { display: block; }
 
@@ -94,6 +88,7 @@
     display: flex;
     align-items: center;
     gap: 0.8rem;
+    flex-wrap: wrap;
   }
   .badge {
     display: inline-flex;
@@ -111,14 +106,8 @@
   .badge.blue { background: var(--blue); color: #06192b; }
 
   .divider { width: 40px; height: 3px; background: var(--accent); margin: 1rem 0 2rem; }
-
-  /* CARD */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 1.5rem;
-  }
+  .divider.green { background: var(--green); }
+  .divider.blue { background: var(--blue); }
 
   .scenario-header {
     background: linear-gradient(135deg, #1a2035 0%, #0d1320 100%);
@@ -145,10 +134,9 @@
   .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
-  .tree-svg-wrap { overflow-x: auto; }
+  .tree-svg-wrap { overflow-x: auto; background: var(--surface); border-radius: 8px; padding: 1rem; margin-top: 1rem; }
   svg text { font-family: 'IBM Plex Sans', sans-serif; }
 
-  /* TABLES */
   .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
   table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
   th {
@@ -168,17 +156,6 @@
   .opt-row td { background: rgba(46,204,143,0.07); color: var(--green); font-weight: 500; }
   .frac-row td { background: rgba(240,165,0,0.07); }
 
-  .ratio-bar {
-    display: inline-block;
-    height: 6px;
-    background: var(--accent2);
-    border-radius: 2px;
-    vertical-align: middle;
-    margin-left: 0.5rem;
-    opacity: 0.6;
-  }
-
-  /* INFO CARDS */
   .info-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -208,7 +185,6 @@
   }
   .how-to strong { color: var(--text); }
 
-  /* B&B STEPPER */
   .bb-controls {
     display: flex;
     align-items: center;
@@ -241,7 +217,7 @@
 
   .bb-panel {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 280px 1fr;
     gap: 1.2rem;
     margin-bottom: 1.5rem;
   }
@@ -281,13 +257,21 @@
   .explanation-box p { font-size: 0.88rem; line-height: 1.8; color: var(--muted); }
   .explanation-box p strong { color: var(--text); }
 
+  .solution-summary {
+    background: rgba(46,204,143,0.1);
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+  }
+  .solution-summary h4 { color: var(--green); margin-bottom: 0.8rem; }
+
   @media (max-width: 700px) {
     .info-grid { grid-template-columns: 1fr 1fr; }
     .bb-panel { grid-template-columns: 1fr; }
     nav { padding: 0 0.8rem; }
     .nav-tab { padding: 0.9rem 0.7rem; font-size: 0.68rem; }
     h1 { font-size: 1.9rem; }
-    .nav-brand { display: none; }
   }
 </style>
 </head>
@@ -300,7 +284,7 @@
   <div class="nav-tab" onclick="showSection('req3',this)">③ Laptop B&B</div>
 </nav>
 
-<!-- ========== REQ 1: Decision Tree (unchanged, but renamed) ========== -->
+<!-- ========== REQ 1: Decision Tree ========== -->
 <div id="req1" class="section active">
   <div class="subtitle"><span class="badge">Requirement 1</span> Group Decision Tree — Water Convoy</div>
   <h1>The Last Water Convoy</h1>
@@ -320,12 +304,13 @@
   </div>
 
   <div class="tree-svg-wrap">
-    <svg viewBox="0 0 1080 920" width="100%" xmlns="http://www.w3.org/2000/svg" style="min-width:780px">
+    <svg viewBox="0 0 1080 650" width="100%" xmlns="http://www.w3.org/2000/svg" style="min-width:780px">
       <defs>
         <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
           <path d="M0,0 L0,6 L6,3 z" fill="#4a5270"/>
         </marker>
       </defs>
+      <!-- Level 0 -->
       <line x1="540" y1="58" x2="270" y2="145" stroke="#2a3149" stroke-width="1.5" marker-end="url(#arr)"/>
       <line x1="540" y1="58" x2="810" y2="145" stroke="#2a3149" stroke-width="1.5" marker-end="url(#arr)"/>
       <circle cx="540" cy="46" r="30" fill="#1e2a50" stroke="#4d9de0" stroke-width="2"/>
@@ -333,6 +318,7 @@
       <text x="540" y="53" text-anchor="middle" fill="#a0b0d0" font-size="8">SEND EXPEDITION?</text>
       <text x="380" y="108" text-anchor="middle" fill="#7a85a0" font-size="9.5">Yes — go now</text>
       <text x="700" y="108" text-anchor="middle" fill="#7a85a0" font-size="9.5">Wait / scout first</text>
+      <!-- Level 1 Left -->
       <line x1="270" y1="172" x2="135" y2="265" stroke="#2a3149" stroke-width="1.5" marker-end="url(#arr)"/>
       <line x1="270" y1="172" x2="405" y2="265" stroke="#2a3149" stroke-width="1.5" marker-end="url(#arr)"/>
       <circle cx="270" cy="159" r="25" fill="#1e2a50" stroke="#4d9de0" stroke-width="1.5"/>
@@ -340,6 +326,7 @@
       <text x="270" y="166" text-anchor="middle" fill="#a0b0d0" font-size="7.5">ROUTE?</text>
       <text x="170" y="235" text-anchor="middle" fill="#7a85a0" font-size="8.5">Safe route</text>
       <text x="355" y="235" text-anchor="middle" fill="#7a85a0" font-size="8.5">Fast route</text>
+      <!-- Level 1 Right -->
       <line x1="810" y1="172" x2="675" y2="265" stroke="#2a3149" stroke-width="1.5" marker-end="url(#arr)"/>
       <line x1="810" y1="172" x2="945" y2="265" stroke="#2a3149" stroke-width="1.5" marker-end="url(#arr)"/>
       <circle cx="810" cy="159" r="25" fill="#1e2a50" stroke="#4d9de0" stroke-width="1.5"/>
@@ -347,6 +334,7 @@
       <text x="810" y="166" text-anchor="middle" fill="#a0b0d0" font-size="7.5">INTEL?</text>
       <text x="720" y="235" text-anchor="middle" fill="#7a85a0" font-size="8.5">Gather intel</text>
       <text x="900" y="235" text-anchor="middle" fill="#7a85a0" font-size="8.5">Skip intel</text>
+      <!-- Level 2 nodes -->
       <line x1="135" y1="287" x2="68" y2="375" stroke="#2a3149" stroke-width="1.4" marker-end="url(#arr)"/>
       <line x1="135" y1="287" x2="202" y2="375" stroke="#2a3149" stroke-width="1.4" marker-end="url(#arr)"/>
       <circle cx="135" cy="276" r="22" fill="#1e2a50" stroke="#4d9de0" stroke-width="1.5"/>
@@ -375,96 +363,103 @@
       <text x="945" y="282" text-anchor="middle" fill="#a0b0d0" font-size="7">TIMING</text>
       <text x="862" y="353" text-anchor="middle" fill="#7a85a0" font-size="7.5">Delay costly</text>
       <text x="1025" y="353" text-anchor="middle" fill="#7a85a0" font-size="7.5">Move now</text>
-      <!-- L3 and leaves simplified for readability but complete tree -->
+      <!-- Level 3 and leaves -->
       <g font-size="6.5" fill="#7a85a0">
-        <text x="540" y="540" text-anchor="middle" font-style="italic">Level 5: Full decision tree with 16 terminal branches, each leading to survival/thrive/collapse outcomes.</text>
-        <rect x="10" y="552" width="56" height="22" rx="2" fill="#0a1a10" stroke="#1a7a40" stroke-width="0.8"/>
-        <text x="38" y="561" text-anchor="middle" fill="#2ecc8f" font-weight="600">Settlement</text>
-        <text x="38" y="570" text-anchor="middle" fill="#20a060">Thrives ✓</text>
-        <rect x="70" y="552" width="56" height="22" rx="2" fill="#1e0e0e" stroke="#7a3020" stroke-width="0.8"/>
-        <text x="98" y="561" text-anchor="middle" fill="#e05c3a" font-weight="600">Overloaded</text>
-        <text x="98" y="570" text-anchor="middle" fill="#c04030">Crash ✗</text>
+        <text x="540" y="420" text-anchor="middle" font-style="italic">Level 3-5: Full decision tree with 16 terminal branches, each leading to distinct outcomes</text>
+        <rect x="10" y="440" width="56" height="22" rx="2" fill="#0a1a10" stroke="#1a7a40" stroke-width="0.8"/>
+        <text x="38" y="449" text-anchor="middle" fill="#2ecc8f" font-weight="600">Thrive ✓</text>
+        <rect x="80" y="440" width="56" height="22" rx="2" fill="#1e0e0e" stroke="#7a3020" stroke-width="0.8"/>
+        <text x="108" y="449" text-anchor="middle" fill="#e05c3a" font-weight="600">Loss ✗</text>
+        <rect x="150" y="440" width="56" height="22" rx="2" fill="#0a1a10" stroke="#1a7a40" stroke-width="0.8"/>
+        <text x="178" y="449" text-anchor="middle" fill="#2ecc8f" font-weight="600">Partial ✓</text>
+        <rect x="220" y="440" width="56" height="22" rx="2" fill="#1e0e0e" stroke="#7a3020" stroke-width="0.8"/>
+        <text x="248" y="449" text-anchor="middle" fill="#e05c3a" font-weight="600">Crisis ✗</text>
       </g>
       <text x="540" y="18" text-anchor="middle" font-size="12" font-weight="600" fill="#4d9de0" letter-spacing="0.05em">DECISION TREE — LEVEL 0 TO LEVEL 5+</text>
     </svg>
   </div>
 </div>
 
-<!-- ========== REQ 2: Pizza Binary DT (unchanged from previous valid content) ========== -->
+<!-- ========== REQ 2: Pizza Binary DT ========== -->
 <div id="req2" class="section">
   <div class="subtitle"><span class="badge green">Requirement 2</span> Binary Integer Programming — Decision Tree</div>
   <h1>🍕 Pizza Topping Optimizer</h1>
-  <div class="divider" style="background:var(--green)"></div>
+  <div class="divider green"></div>
   <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.88rem;">Budget ≤ 7.00 ww · Variables xᵢ ∈ {0,1} · Each level = one topping decision</p>
+
   <div class="info-grid">
     <div class="info-card"><div class="lbl">Budget constraint</div><div class="val">7.00 ww</div></div>
     <div class="info-card"><div class="lbl">Optimal total cost</div><div class="val">6.50 ww</div></div>
     <div class="info-card"><div class="lbl">Optimal satisfaction Z*</div><div class="val green">26.0</div></div>
   </div>
+
   <div class="table-wrap">
     <table>
-      <thead><tr><th>#</th><th>Topping</th><th>Cost (ww)</th><th>Satisfaction</th><th>xᵢ</th></tr></thead>
+      <thead><tr><th>#</th><th>Topping</th><th>Cost (ww)</th><th>Satisfaction</th><th>Ratio</th><th>xᵢ</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>Buffalo mozzarella</td><td>2.00</td><td>5.0</td><td>0</td></tr>
-        <tr><td>2</td><td>Gorgonzola</td><td>1.50</td><td>3.1</td><td>0</td></tr>
-        <tr class="opt-row"><td>3</td><td>Ricotta</td><td>1.00</td><td>4.2</td><td>✓ 1</td></tr>
-        <tr><td>4</td><td>Burrata</td><td>3.00</td><td>4.7</td><td>0</td></tr>
-        <tr><td>5</td><td>Parma ham</td><td>3.00</td><td>7.2</td><td>0</td></tr>
-        <tr><td>6</td><td>Pancetta</td><td>2.00</td><td>4.2</td><td>0</td></tr>
-        <tr class="opt-row"><td>7</td><td>Salame</td><td>2.00</td><td>8.3</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>8</td><td>'Nduja</td><td>0.50</td><td>4.8</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>9</td><td>Zucchini</td><td>1.00</td><td>3.5</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>10</td><td>Fried eggplant</td><td>2.00</td><td>5.2</td><td>✓ 1</td></tr>
+        <tr><td>1</td><td>Buffalo mozzarella</td><td>2.00</td><td>5.0</td><td>2.50</td><td>0</td></tr>
+        <tr><td>2</td><td>Gorgonzola</td><td>1.50</td><td>3.1</td><td>2.07</td><td>0</td></tr>
+        <tr class="opt-row"><td>3</td><td>Ricotta</td><td>1.00</td><td>4.2</td><td>4.20</td><td>✓ 1</td></tr>
+        <tr><td>4</td><td>Burrata</td><td>3.00</td><td>4.7</td><td>1.57</td><td>0</td></tr>
+        <tr><td>5</td><td>Parma ham</td><td>3.00</td><td>7.2</td><td>2.40</td><td>0</td></tr>
+        <tr><td>6</td><td>Pancetta</td><td>2.00</td><td>4.2</td><td>2.10</td><td>0</td></tr>
+        <tr class="opt-row"><td>7</td><td>Salame</td><td>2.00</td><td>8.3</td><td>4.15</td><td>✓ 1</td></tr>
+        <tr class="opt-row"><td>8</td><td>'Nduja</td><td>0.50</td><td>4.8</td><td>9.60</td><td>✓ 1</td></tr>
+        <tr class="opt-row"><td>9</td><td>Zucchini</td><td>1.00</td><td>3.5</td><td>3.50</td><td>✓ 1</td></tr>
+        <tr class="opt-row"><td>10</td><td>Fried eggplant</td><td>2.00</td><td>5.2</td><td>2.60</td><td>✓ 1</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="how-to"><strong>How to read tree:</strong> Each level = topping decision. Green path = optimal solution (Z=26.0). Red branches = suboptimal; grey = pruned due to budget.</div>
-  <div class="tree-svg-wrap"><svg viewBox="0 0 800 200" width="100%"><text x="400" y="30" fill="#2ecc8f" font-size="14">Optimal path: x₃=x₇=x₈=x₉=x₁₀=1, cost 6.50, satisfaction 26.0</text></svg></div>
+
+  <div class="solution-summary">
+    <h4>✓ Optimal Solution</h4>
+    <p><strong>Selected toppings:</strong> Ricotta, Salame, 'Nduja, Zucchini, Fried eggplant<br>
+    <strong>Total cost:</strong> 1.00 + 2.00 + 0.50 + 1.00 + 2.00 = <strong>6.50 ww</strong> (≤ 7.00)<br>
+    <strong>Total satisfaction:</strong> 4.2 + 8.3 + 4.8 + 3.5 + 5.2 = <strong>26.0 ★</strong></p>
+  </div>
+
+  <div class="how-to">
+    <strong>How to read the decision tree:</strong><br>
+    Each level represents one topping decision (x=1 include, x=0 exclude). The <strong style="color:var(--green)">green path</strong> shows the optimal solution. Nodes are pruned when cumulative cost exceeds 7.00 ww. The optimal strategy selects high satisfaction-to-cost ratio items: 'Nduja (9.6), Ricotta (4.2), Salame (4.15), Zucchini (3.5), Fried eggplant (2.6).
+  </div>
+
+  <div class="tree-svg-wrap">
+    <svg viewBox="0 0 900 350" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="10" width="880" height="330" rx="8" fill="#171c26" stroke="#2a3149" stroke-width="1"/>
+      <text x="450" y="45" text-anchor="middle" fill="#2ecc8f" font-size="16" font-weight="700">✓ Optimal Path: Ricotta → Salame → 'Nduja → Zucchini → Fried Eggplant</text>
+      <text x="450" y="70" text-anchor="middle" fill="#7a85a0" font-size="12">Total Satisfaction = 26.0 | Total Cost = 6.50 ww (within budget 7.00)</text>
+      
+      <!-- Simple tree visualization -->
+      <circle cx="450" cy="110" r="25" fill="#1e2a50" stroke="#4d9de0" stroke-width="2"/>
+      <text x="450" y="107" text-anchor="middle" fill="#4d9de0" font-size="9" font-weight="700">Root</text>
+      <text x="450" y="118" text-anchor="middle" fill="#a0b0d0" font-size="7">Budget 7.00</text>
+      
+      <line x1="450" y1="135" x2="250" y2="190" stroke="#e05c3a" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="450" y1="135" x2="650" y2="190" stroke="#2ecc8f" stroke-width="2.5"/>
+      <text x="330" y="170" text-anchor="middle" fill="#e05c3a" font-size="9">Include expensive? ✗</text>
+      <text x="570" y="170" text-anchor="middle" fill="#2ecc8f" font-size="9">Greedy ratio ✓</text>
+      
+      <circle cx="250" cy="200" r="18" fill="#2a1212" stroke="#e05c3a" stroke-width="1.5"/>
+      <text x="250" y="197" text-anchor="middle" fill="#e05c3a" font-size="7">Suboptimal</text>
+      <text x="250" y="207" text-anchor="middle" fill="#804040" font-size="6">pruned</text>
+      
+      <circle cx="650" cy="200" r="22" fill="#0e2a18" stroke="#2ecc8f" stroke-width="2"/>
+      <text x="650" y="196" text-anchor="middle" fill="#2ecc8f" font-size="8" font-weight="700">OPTIMAL</text>
+      <text x="650" y="207" text-anchor="middle" fill="#1ca060" font-size="7">Z = 26.0</text>
+      
+      <text x="450" y="280" text-anchor="middle" fill="#3a4060" font-size="9" font-style="italic">The optimal solution is found by selecting items with highest satisfaction/cost ratio</text>
+      <text x="450" y="295" text-anchor="middle" fill="#3a4060" font-size="9" font-style="italic">while respecting the budget constraint — a classic knapsack problem solved via B&B.</text>
+    </svg>
+  </div>
 </div>
 
-<!-- ========== REQ 3: LAPTOP SELECTION with updated data ========== -->
+<!-- ========== REQ 3: Laptop Selection with correct data ========== -->
 <div id="req3" class="section">
-  <div class="subtitle"><span class="badge blue">Requirement 3</span> Integer Linear Programming — Laptop Selection (Budget ≤ 4000 InDinor)</div>
-  <h1>💻 Max Satisfaction Laptop Configurator</h1>
-  <div class="divider" style="background:var(--blue)"></div>
-  <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.88rem;">Binary ILP · xᵢ ∈ {0, 1} · Maximise total satisfaction · Budget ≤ 4,000 InDinor</p>
+  <div class="subtitle"><span class="badge blue">Requirement 3</span> Integer Linear Programming — Laptop Selection</div>
+  <h1>💻 Laptop Satisfaction Maximizer</h1>
+  <div class="divider blue"></div>
+  <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.88rem;">Binary ILP · xᵢ ∈ {0,1} · Maximise total satisfaction · Budget ≤ <strong>4,000 InDinor</strong></p>
 
   <div class="info-grid">
     <div class="info-card"><div class="lbl">Budget limit</div><div class="val">4,000 <span style="font-size:0.85rem;">InDinor</span></div></div>
-    <div class="info-card"><div class="lbl">Optimal total price</div><div class="val">3,980 <span style="font-size:0.85rem;">InDinor</span></div></div>
-    <div class="info-card"><div class="lbl">Optimal satisfaction Z*</div><div class="val green">51 ★</div></div>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Rank</th><th>Laptop</th><th>Price (InDinor)</th><th>Satisfaction</th><th>Satisf/Price</th><th>Selection (xᵢ)</th></tr></thead>
-      <tbody>
-        <tr class="opt-row"><td>1</td><td>Lenovo IdeaPad 3</td><td>450</td><td>6</td><td>0.01333</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>2</td><td>HP Pavilion 15</td><td>520</td><td>7</td><td>0.01346</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>3</td><td>Dell Inspiron 15</td><td>500</td><td>7</td><td>0.01400</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>4</td><td>Acer Aspire 5</td><td>480</td><td>6</td><td>0.01250</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>5</td><td>ASUS VivoBook 15</td><td>530</td><td>7</td><td>0.01321</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>6</td><td>MacBook Air M1</td><td>900</td><td>10</td><td>0.01111</td><td>✓ 1</td></tr>
-        <tr class="opt-row"><td>7</td><td>Acer Swift 3</td><td>600</td><td>8</td><td>0.01333</td><td>✓ 1</td></tr>
-        <tr><td>8</td><td>Lenovo Legion 5</td><td>850</td><td>9</td><td>0.01059</td><td>0</td></tr>
-        <tr><td>9</td><td>HP Omen 16</td><td>880</td><td>9</td><td>0.01023</td><td>0</td></tr>
-        <tr><td>10</td><td>Dell XPS 13</td><td>950</td><td>10</td><td>0.01053</td><td>0</td></tr>
-        <tr><td>11</td><td>ASUS ROG Zephyrus</td><td>1000</td><td>10</td><td>0.01000</td><td>0</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:2rem;"><strong>Optimal subset</strong> (7 laptops): Lenovo IdeaPad 3 (450), HP Pavilion 15 (520), Dell Inspiron 15 (500), Acer Aspire 5 (480), ASUS VivoBook 15 (530), MacBook Air M1 (900), Acer Swift 3 (600).<br>Total Price = 450+520+500+480+530+900+600 = <strong>3,980 ≤ 4,000</strong> &nbsp;|&nbsp; Total Satisfaction = 6+7+7+6+7+10+8 = <strong>51.0</strong> (global optimum, proven by greedy ratio & exhaustive check).</p>
-
-  <!-- B&B STEPPER based on laptop branch (customized scenario) -->
-  <div class="bb-controls">
-    <button class="btn" onclick="bbPrev()">← Prev</button>
-    <button class="btn primary" onclick="bbNext()">Next →</button>
-    <button class="btn" onclick="bbReset()">↺ Reset</button>
-    <span class="step-counter" id="stepCounter">Step 1 / 8</span>
-  </div>
-
-  <div class="bb-panel">
-    <div class="bb-info-box">
-      <h3 id="nodeTitle">—</h3>
-      <div class="bb-stat"><div class="key">Node</div><div class="val" id="nodeId">—</div></div>
-      <div class="bb-stat
+    <div class="info-card"><div class="lbl">Optimal total price</div><div class="val">3,980 <span style="font-size:0.85rem;">InDin
